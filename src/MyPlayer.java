@@ -1,10 +1,12 @@
 import java.awt.*;
+import java.util.ArrayList;
 
 public class MyPlayer {
     public Chip[][] gameBoard;
     public int[] columns;
     public int num1, num2, num3;
     public boolean WS;
+    public boolean LS;
 
     public MyPlayer() {
         columns = new int[10];
@@ -13,7 +15,6 @@ public class MyPlayer {
          * This code will run just once, when the game opens.
          * Add your code here.
          */
-
         for (int x = 3; x >= 1; x--) { // first number
             for (int y = x; y >= 0; y--) { // second number
                 for (int z = y; z >= 0; z--) { // third number
@@ -25,9 +26,7 @@ public class MyPlayer {
                         num2 = y;
                         num3 = z-c;
                         System.out.print(num1 + "" + num2 + "" + num3 + ", ");
-                    }
-                    if(num1==1 && num2==0 && num3==0){
-                        WS=true;
+                        checkS();
                     }
 
 
@@ -37,50 +36,68 @@ public class MyPlayer {
                             num2 = y-b;
                             num3 = z;
                             System.out.print(num1 + "" + num2 + "" + num3 + ", ");
+                            checkS();
                         }
                         else {
                             num1 = x;
                             num2 = y-b;
                             num3 = y-b;
                             System.out.print(num1 + "" + num2 + "" + num3 + ", ");
+                            checkS();
                         }
                     }
                     if(num1==1 && num2==0 && num3==0){
                         WS=true;
                     }
 
-
-                    for (int a=1; a<=x-1; a++){ // LVL 3
-                        if(x-a>y){
-                            num1 = x-a;
-                            num2 = y;
-                            num3 = y;
-                            System.out.print(num1 + "" + num2 + "" + num3 + ", ");
+                        for (int a = 1; a <= x - 1; a++) { // LVL 3
+                            if (x - a > y) {
+                                num1 = x - a;
+                                num2 = y;
+                                num3 = y;
+                                System.out.print(num1 + "" + num2 + "" + num3 + ", ");
+                                checkS();
+                            } else {
+                                if (x - a > z && x - a <= y) {
+                                    num1 = x - a;
+                                    num2 = x - a;
+                                    num3 = z;
+                                    System.out.print(num1 + "" + num2 + "" + num3 + ", ");
+                                    checkS();
+                                } else {
+                                    num1 = x - a;
+                                    num2 = x - a;
+                                    num3 = x - a;
+                                    System.out.print(num1 + "" + num2 + "" + num3 + ", ");
+                                    checkS();
+                                }
+                            }
+                            if (num1 == 1 && num2 == 0 && num3 == 0) {
+                                WS = true;
+                            }
                         }
-                        if(x-a>z && x-a<=y){
-                            num1 = x-a;
-                            num2 = x-a;
-                            num3 = z;
-                            System.out.print(num1 + "" + num2 + "" + num3 + ", ");
+                        if (WS == true) {
+                            System.out.print(" [WS]");
+                            WS = false;
+                            LS = false;
                         }
-                        else {
-                            num1 = x-a;
-                            num2 = x-a;
-                            num3 = x-a;
-                            System.out.print(num1 + "" + num2 + "" + num3 + ", ");;
+                        if(LS==true){
+                            //System.out.print(" [LS]");
                         }
-                        if(num1==1 && num2==0 && num3==0){
-                            WS=true;
-                        }
-                    }
-                    if(WS==true){
-                        System.out.print(" WS");
-                        WS = false;
-                    }
+                        num1=0; // this is just so it doesn't confuse 100 with a WS
                 }
             }
         }
-        System.out.println(" LS");
+        System.out.println(" [LS]"); // this is just so it prints 100 as a lose state
+    }
+
+    public void checkS(){
+        if(((num1==3 || num1==2) && num2==0 && num3==0) || (num1==1 && num2==1 && (num3==0 || num3==1))){
+            LS = true;
+        }
+        else{
+            LS = false;
+        }
     }
 
     public Point move(Chip[][] pBoard) {

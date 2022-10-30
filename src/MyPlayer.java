@@ -7,12 +7,17 @@ public class MyPlayer {
     public int[] columns;
     public int num1, num2, num3;
 
+    public int counter;
+    public int count1;
+
     public int[] num;
     public int[] possNum;
     ArrayList<int[]> boards = new ArrayList<int[]>();
     ArrayList<int[]> LBoards = new ArrayList<int[]>();
     ArrayList<int[]> WBoards = new ArrayList<int[]>();
     ArrayList<int[]> possBoards = new ArrayList<int[]>();
+
+    public boolean loseBoard;
 
     public MyPlayer() {
         columns = new int[10];
@@ -22,25 +27,35 @@ public class MyPlayer {
          * Add your code here.
          */
 
+
+        // to check for a winning/losing board, check the current board against the current arraylist of boards you have.
+
         for (int x = 1; x <= 3; x++) { // first number
             for (int y = 0; y <= x; y++) { // second number
                 for (int z = 0; z <= y; z++) { // third number
+                    possBoards.clear();
                     num = new int[3];
                     num[0] = x;
                     num[1] = y;
                     num[2] = z;
                     boards.add(num);
-                    if(num[0]==1 && num[1]==0 && num[2]==0){
-                        LBoards.add(num);
-                    }
+                    possNum = new int[3];
+                    possNum[0]=0;
+                    possNum[1]=0;
+                    possNum[2]=0;
 
-/*
+
                     for (int c = 1; c <= z; c++) { // LVL 1
                         possNum = new int[3];
                         possNum[0] = x;
                         possNum[1] = y;
                         possNum[2] = z - c;
+                        System.out.print(Arrays.toString(possNum)+"HERE 1");
+                        possBoards.add(possNum);
 
+
+                        checkOneZeroZero();
+                        count1++;
                     }
 
 
@@ -49,13 +64,20 @@ public class MyPlayer {
                             possNum[0] = x;
                             possNum[1] = y - b;
                             possNum[2] = z;
-
                         } else {
                             possNum[0] = x;
                             possNum[1] = y - b;
                             possNum[2] = y - b;
-
                         }
+                        for(int[] i : possBoards){
+                            System.out.print(Arrays.toString(i)+ "HERE 2");
+                        }
+                        possBoards.add(possNum);
+                        for(int[] i : possBoards){
+                            System.out.print(Arrays.toString(i)+"HERE 3");
+                        }
+                        checkOneZeroZero();
+                        count1++;
                     }
 
                     for (int a = 1; a <= x - 1; a++) { // LVL 3
@@ -63,7 +85,6 @@ public class MyPlayer {
                             possNum[0] = x - a;
                             possNum[1] = y;
                             possNum[2] = y;
-
                         } else {
                             if (x - a > z && x - a <= y) {
                                 possNum[0] = x - a;
@@ -76,95 +97,22 @@ public class MyPlayer {
                                 possNum[2] = x - a;
                             }
                         }
-
-
+                        possBoards.add(possNum);
+                        checkOneZeroZero();
+                        count1++;
                     }
-
- */
-                }
-            }
-
-
-
-
-
-
-        /*for (int x = 3; x >= 1; x--) { // first number
-            for (int y = x; y >= 0; y--) { // second number
-                for (int z = y; z >= 0; z--) { // third number
-                    System.out.println();
-                    System.out.print("(" + x + " " + y + " " + z + ") --> ");
-
-                    for (int c = 1; c <= z; c++) { // LVL 1
-                        num1 = x;
-                        num2 = y;
-                        num3 = z-c;
-                        System.out.print(num1 + "" + num2 + "" + num3 + ", ");
-                        checkS();
+                    System.out.print(Arrays.toString(num)+"       ");
+                    for(int[] i : possBoards){
+                        System.out.print(Arrays.toString(i));
                     }
-
-
-                    for (int b=1; b<=y; b++){ // LVL 2
-                        if(y-b>z){
-                            num1 = x;
-                            num2 = y-b;
-                            num3 = z;
-                            System.out.print(num1 + "" + num2 + "" + num3 + ", ");
-                            checkS();
-                        }
-                        else {
-                            num1 = x;
-                            num2 = y-b;
-                            num3 = y-b;
-                            System.out.print(num1 + "" + num2 + "" + num3 + ", ");
-                            checkS();
-                        }
-                    }
-                    if(num1==1 && num2==0 && num3==0){
-                        WS=true;
-                    }
-
-                        for (int a = 1; a <= x - 1; a++) { // LVL 3
-                            if (x - a > y) {
-                                num1 = x - a;
-                                num2 = y;
-                                num3 = y;
-                                System.out.print(num1 + "" + num2 + "" + num3 + ", ");
-                                checkS();
-                            } else {
-                                if (x - a > z && x - a <= y) {
-                                    num1 = x - a;
-                                    num2 = x - a;
-                                    num3 = z;
-                                    System.out.print(num1 + "" + num2 + "" + num3 + ", ");
-                                    checkS();
-                                } else {
-                                    num1 = x - a;
-                                    num2 = x - a;
-                                    num3 = x - a;
-                                    System.out.print(num1 + "" + num2 + "" + num3 + ", ");
-                                    checkS();
-                                }
-                            }
-                            if (num1 == 1 && num2 == 0 && num3 == 0) {
-                                WS = true;
-                            }
-                        }
-                        if (WS == true) {
-                            System.out.print(" [WS]");
-                            WS = false;
-                            LS = false;
-                        }
-                        if(LS==true){
-                            //System.out.print(" [LS]");
-                        }
-                        num1=0; // this is just so it doesn't confuse 100 with a WS
+                    checkLoseBoard();
                 }
             }
         }
-        System.out.println(" [LS]"); // this is just so it prints 100 as a lose state
-    */
-        }
+
+
+
+        System.out.println();
         System.out.println("All Possible Boards:");
         for (int[] i : boards) {
             System.out.print(Arrays.toString(i)+" ");
@@ -179,17 +127,31 @@ public class MyPlayer {
         for (int[] i : WBoards) {
             System.out.print(Arrays.toString(i)+" ");
         }
+    }
 
-    /*public void checkS(){
-        if(((num1==3 || num1==2) && num2==0 && num3==0) || (num1==1 && num2==1 && (num3==0 || num3==1))){
-            LS = true;
-        }
-        else{
-            LS = false;
+    public void checkOneZeroZero(){ // if an outcome is 100, its automatically a winning board.
+        if(possNum[0]==1 && possNum[1]==0 && possNum[2]==0){
+            WBoards.add(num);
         }
     }
 
-     */
+    public void checkLoseBoard(){ // if all of a board's outcomes are Win boards, it's a lose board.
+        counter=0;
+        for(int[] x : possBoards) {
+            for (int[] i : WBoards) {
+                if(Arrays.toString(x).equals(Arrays.toString(i))){
+                    //System.out.println(Arrays.toString(x)+" "+Arrays.toString(i));
+                    counter++;
+                    break;
+                }
+            }
+        }
+        System.out.println(counter+"  "+ count1);
+        System.out.println();
+        if(counter==count1){
+            LBoards.add(num);
+        }
+        count1 = 0;
     }
 
         public Point move (Chip[][]pBoard){

@@ -4,11 +4,12 @@ public class Board {
 
     public int[] num;
     public int[] possNum;
-    public int count1=0;
+    public int[] bestMove;
+    public int count1=0; // keeps track of how many outcomes there are
+    ArrayList<int[]> possBoards = new ArrayList<int[]>();
 
 
     public Board(int x, int y, int z){
-        ArrayList<int[]> possBoards = new ArrayList<int[]>();
         num = new int[3];
         num[0]=x;
         num[1]=y;

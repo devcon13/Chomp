@@ -8,14 +8,11 @@ public class MyPlayer {
     public int[] columns;
 
     public int counter; // keeps track of how many possible outcomes are win states
-
-    public Board tempBoard;
-
+    public Board tempBoard; // temporary placeholder to generate the board in order to put into the arrayList
 
     ArrayList<Board> boards = new ArrayList<Board>();
     ArrayList<Board> LBoards = new ArrayList<Board>();
     ArrayList<Board> WBoards = new ArrayList<Board>();
-    public boolean pleaseBreak;
 
     public MyPlayer() {
         columns = new int[10];
@@ -25,15 +22,11 @@ public class MyPlayer {
          * Add your code here.
          */
 
-
-
-        // PRIMARY OUTER LOOP. GENERATE BOARDS.
         for (int x = 1; x <= 3; x++) { // first number
             for (int y = 0; y <= x; y++) { // second number
                 for (int z = 0; z <= y; z++) { // third number
-
                     tempBoard = new Board(x,y,z);
-
+                    findBestMove();
                     boards.add(tempBoard);
                     checkWinBoard();
                     checkLoseBoard();
@@ -41,27 +34,44 @@ public class MyPlayer {
             }
         }
 
-
-
+        // Print out possible boards w/ their best move, all boards in the lose boards array, all boards in the win boards array
         System.out.println();
-        System.out.println("All Possible Boards:");
+        System.out.println("all possible boards ");
         for (Board i : boards) {
-            System.out.print(i.num[0]+""+i.num[1]+""+i.num[2]);
+            System.out.println(i.num[0]+""+i.num[1]+""+i.num[2]+" best move "+Arrays.toString(i.bestMove));
         }
         System.out.println();
-        System.out.println("Losing Boards: ");
+        System.out.println("lose boards ");
         for (Board i : LBoards) {
-            System.out.print(i.num[0]+""+i.num[1]+""+i.num[2]);
+            System.out.print(i.num[0]+""+i.num[1]+""+i.num[2]+" ");
         }
         System.out.println();
-        System.out.println("Winning Boards: ");
+        System.out.println("win boards ");
         for (Board i : WBoards) {
-            System.out.print(i.num[0]+""+i.num[1]+""+i.num[2]);
+            System.out.print(i.num[0]+""+i.num[1]+""+i.num[2]+" ");
         }
     }
 
-    public void checkLoseBoard(){ // if all of a board's outcomes are Win boards, it's a lose board.
-        counter=0;
+    public void findBestMove(){
+        int movesToWin = 1000;
+        for(int[] i : tempBoard.possBoards){
+            for(Board x : LBoards){
+                if(Arrays.toString(i).equals("["+x.num[0]+", "+x.num[1]+", "+x.num[2]+"]")){ // if the possboard is a winning board...
+                    if(x.num[0]+x.num[1]+x.num[2]<movesToWin){ // if the possboard takes less moves to win than the previous recorded best move... this possboard is the best move
+                        tempBoard.bestMove=i;
+                    }
+                }
+            }
+        }
+        if(tempBoard.bestMove==null){ // if, after running through the loops above, there's still no best move (aka it's a losing board)
+            for(int[] i : tempBoard.possBoards){ // just pick the last possboard that the board has (kinda random)
+                tempBoard.bestMove=i;
+            }
+        }
+    }
+
+    public void checkLoseBoard(){ // if all of a board's possboards are winboards, put it in the loseboard array.
+        counter=0; // keeps track of the number of win boards
         for(int[] x : tempBoard.possBoards) {
             for (Board i: WBoards) {
                 if(Arrays.toString(x).equals("["+i.num[0]+", "+i.num[1]+", "+i.num[2]+"]")){
@@ -69,29 +79,25 @@ public class MyPlayer {
                 }
             }
         }
-        System.out.println(counter+" win boards out of "+ tempBoard.count1);
-        System.out.println();
-        if(counter== tempBoard.count1){
+        if(counter==tempBoard.count1){  // if the number of possboards equals the number of counted winboards above...
             LBoards.add(tempBoard);
         }
     }
 
-    public void checkWinBoard(){ // if the board produces a lose board its automatically a win state
-        pleaseBreak=false;
+    public void checkWinBoard(){ // if one of the board's possboards is a lose board, put it in the winboard array.
+        boolean pleaseBreak=false;
         for(int[] x : tempBoard.possBoards) {
             for (Board i: LBoards) {
-                if(pleaseBreak==true){
+                if(pleaseBreak==true){ // if true, prohibits loop from continuing
                     break;
                 }
                 if(Arrays.toString(x).equals("["+i.num[0]+", "+i.num[1]+", "+i.num[2]+"]")){
                     WBoards.add(tempBoard);
-                    pleaseBreak=true;
-                    break;
+                    pleaseBreak=true; // if already found a win board, don't keep looping through board
                 }
             }
         }
     }
-
 
     public Point move (Chip[][]pBoard){
 
@@ -101,7 +107,7 @@ public class MyPlayer {
             int column = 0;
             int row = 0;
 
-            row = 1;
+            row = 0;
             column = 1;
 
             /***
@@ -113,7 +119,6 @@ public class MyPlayer {
             Point myMove = new Point(row, column);
             return myMove;
         }
-
     }
 
 

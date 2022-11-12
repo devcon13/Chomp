@@ -7,6 +7,8 @@ public class MyPlayer {
     public Chip[][] gameBoard;
     public int[] columns;
 
+    public int[] cols;
+
     public int counter; // keeps track of how many possible outcomes are win states
     public Board tempBoard; // temporary placeholder to generate the board in order to put into the arrayList
 
@@ -99,6 +101,10 @@ public class MyPlayer {
         }
     }
 
+    public void translate(int row, int col){
+
+    }
+
     public Point move (Chip[][]pBoard){
 
             System.out.println("MyPlayer Move");
@@ -107,14 +113,36 @@ public class MyPlayer {
             int column = 0;
             int row = 0;
 
-            row = 0;
-            column = 1;
+            row = 3;
+            column = 3;
 
             /***
              * This code will run each time the "MyPlayer" button is pressed.
              * Add your code to return the row and the column of the chip you want to take.
              * You'll be returning a data type called Point which consists of two integers.
              */
+
+            for(int i = 0; i<gameBoard.length; i++){
+                System.out.print(gameBoard[0][i].isAlive);
+                if(gameBoard[0][i].isAlive == false){
+                    System.out.println();
+                    cols = new int [i];
+                    System.out.println(i);
+                    break;
+                }
+            }
+
+            for(Chip[] x : gameBoard){
+                for(int i=0; i<cols.length; i++){
+                    if(x[i].isAlive == true){
+                        cols[i]++;
+                    }
+                }
+            }
+
+            for(int y=0; y<cols.length; y++){
+                System.out.print(cols[y]);
+            }
 
             Point myMove = new Point(row, column);
             return myMove;

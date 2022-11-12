@@ -8,7 +8,6 @@ public class Board {
     public int count1=0; // keeps track of how many outcomes there are
     ArrayList<int[]> possBoards = new ArrayList<int[]>();
 
-
     public Board(int x, int y, int z){
         num = new int[3];
         num[0]=x;
@@ -61,4 +60,11 @@ public class Board {
         }
 
     }
+
+    public void translate(){
+
+    }
+
 }
+
+

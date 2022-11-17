@@ -56,19 +56,20 @@ public class MyPlayer {
     }
 
     public void findBestMove(){
-        int movesToWin = 1000;
         for(int[] i : tempBoard.possBoards){
             for(Board x : LBoards){
                 if(Arrays.toString(i).equals("["+x.num[0]+", "+x.num[1]+", "+x.num[2]+"]")){ // if the possboard is a winning board...
-                    if(x.num[0]+x.num[1]+x.num[2]<movesToWin){ // if the possboard takes less moves to win than the previous recorded best move... this possboard is the best move
-                        tempBoard.bestMove=i;
-                    }
+                    tempBoard.bestMove=i;
                 }
             }
         }
+        int movesToLose=0;
         if(tempBoard.bestMove==null){ // if, after running through the loops above, there's still no best move (aka it's a losing board)
-            for(int[] i : tempBoard.possBoards){ // just pick the last possboard that the board has (kinda random)
-                tempBoard.bestMove=i;
+            for(int[] i : tempBoard.possBoards){
+                if(i[0]+i[1]+i[2]>=movesToLose){ // just pick the possboard that leaves you with the most chips left on the board
+                    movesToLose=i[0]+i[1]+i[2];
+                    tempBoard.bestMove=i;
+                }
             }
         }
     }
@@ -110,8 +111,6 @@ public class MyPlayer {
             int column = 0;
             int row = 0;
 
-            row = 3;
-            column = 3;
 
             /***
              * This code will run each time the "MyPlayer" button is pressed.
@@ -148,30 +147,36 @@ public class MyPlayer {
             }
 
             currentBoard = new Board(cols[0], cols[1], cols[2]);
-            for(Board i : boards){
-                if(currentBoard.num[0] == i.num[0] && currentBoard.num[1] == i.num[1] && currentBoard.num[2] == i.num[2]){
+
+        if(currentBoard.num[0]!=1 || currentBoard.num[1]!=0 || currentBoard.num[2]!=0) {
+            for (Board i : boards) {
+                if (currentBoard.num[0] == i.num[0] && currentBoard.num[1] == i.num[1] && currentBoard.num[2] == i.num[2]) {
                     currentBoard = i;
-                    System.out.println(currentBoard.bestMove[0]+""+currentBoard.bestMove[1]+""+currentBoard.bestMove[2]);
+                    System.out.println(currentBoard.bestMove[0] + "" + currentBoard.bestMove[1] + "" + currentBoard.bestMove[2]);
                 }
             }
 
-            int newCount=0;
-            int newThing=0;
-            for(int i=0; i<currentBoard.bestMove.length; i++){
-                if(currentBoard.num[i]==currentBoard.bestMove[i]){
+            int newCount = 0;
+            int newThing = 0;
+            for (int i = 0; i < currentBoard.bestMove.length; i++) {
+                if (currentBoard.num[i] == currentBoard.bestMove[i]) {
                     newCount++;
-                }
-                else{
+                } else {
                     break;
                 }
             }
 
             newThing = currentBoard.bestMove[newCount];
 
-            System.out.println(newCount+""+newThing);
+            System.out.println(newThing + "" + newCount);
 
-            row = newCount;
-            column = newThing;
+            row = newThing;
+            column = newCount;
+        }
+        else{
+            row=0;
+            column=0;
+        }
 
             Point myMove = new Point(row, column);
             return myMove;

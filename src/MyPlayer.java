@@ -11,6 +11,7 @@ public class MyPlayer {
 
     public int counter; // keeps track of how many possible outcomes are win states
     public Board tempBoard; // temporary placeholder to generate the board in order to put into the arrayList
+    public Board currentBoard;
 
     ArrayList<Board> boards = new ArrayList<Board>();
     ArrayList<Board> LBoards = new ArrayList<Board>();
@@ -101,10 +102,6 @@ public class MyPlayer {
         }
     }
 
-    public void translate(int row, int col){
-
-    }
-
     public Point move (Chip[][]pBoard){
 
             System.out.println("MyPlayer Move");
@@ -126,8 +123,14 @@ public class MyPlayer {
                 System.out.print(gameBoard[0][i].isAlive);
                 if(gameBoard[0][i].isAlive == false){
                     System.out.println();
-                    cols = new int [i];
+                    cols = new int [10];
                     System.out.println(i);
+                    break;
+                }
+                if(gameBoard[0][i]==gameBoard[0][9]){
+                    System.out.println();
+                    cols = new int [10];
+                    System.out.println(10);
                     break;
                 }
             }
@@ -143,6 +146,32 @@ public class MyPlayer {
             for(int y=0; y<cols.length; y++){
                 System.out.print(cols[y]);
             }
+
+            currentBoard = new Board(cols[0], cols[1], cols[2]);
+            for(Board i : boards){
+                if(currentBoard.num[0] == i.num[0] && currentBoard.num[1] == i.num[1] && currentBoard.num[2] == i.num[2]){
+                    currentBoard = i;
+                    System.out.println(currentBoard.bestMove[0]+""+currentBoard.bestMove[1]+""+currentBoard.bestMove[2]);
+                }
+            }
+
+            int newCount=0;
+            int newThing=0;
+            for(int i=0; i<currentBoard.bestMove.length; i++){
+                if(currentBoard.num[i]==currentBoard.bestMove[i]){
+                    newCount++;
+                }
+                else{
+                    break;
+                }
+            }
+
+            newThing = currentBoard.bestMove[newCount];
+
+            System.out.println(newCount+""+newThing);
+
+            row = newCount;
+            column = newThing;
 
             Point myMove = new Point(row, column);
             return myMove;

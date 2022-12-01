@@ -6,8 +6,8 @@ public class MyPlayer {
 
     public Chip[][] gameBoard;
     public int[] columns;
-
     public int[] cols;
+    public int count;
 
     public int counter; // keeps track of how many possible outcomes are win states
     public Board tempBoard; // temporary placeholder to generate the board in order to put into the arrayList
@@ -25,41 +25,67 @@ public class MyPlayer {
          * Add your code here.
          */
 
-        for (int x = 1; x <= 3; x++) { // first number
-            for (int y = 0; y <= x; y++) { // second number
-                for (int z = 0; z <= y; z++) { // third number
-                    tempBoard = new Board(x,y,z);
-                    findBestMove();
-                    boards.add(tempBoard);
-                    checkWinBoard();
-                    checkLoseBoard();
+        for (int a = 1; a <= 10; a++) { // 1
+            for (int b = 0; b <= a; b++) { // 2
+                for (int c = 0; c <= b; c++) { // 3
+                    for (int d = 0; d <= c; d++) { // 4
+                        for (int e = 0; e <= d; e++) { // 5
+                            for (int f = 0; f <= e; f++) { // 6
+                                for (int g = 0; g <= f; g++) { // 7
+                                    for (int h = 0; h <= g; h++) { // 8
+                                        for (int i = 0; i <= h; i++) { // 9
+                                            for (int j = 0; j <= i; j++) { // 10
+                                                count++;
+                                                tempBoard = new Board(a, b, c, d, e, f, g, h, i, j);
+                                                findBestMove();
+                                                boards.add(tempBoard);
+                                                checkWinBoard();
+                                                checkLoseBoard();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
 
         // Print out possible boards w/ their best move, all boards in the lose boards array, all boards in the win boards array
-        System.out.println();
+        /*System.out.println();
         System.out.println("all possible boards ");
         for (Board i : boards) {
-            System.out.println(i.num[0]+""+i.num[1]+""+i.num[2]+" best move "+Arrays.toString(i.bestMove));
+            System.out.println(Arrays.toString(i.num));
         }
         System.out.println();
         System.out.println("lose boards ");
         for (Board i : LBoards) {
-            System.out.print(i.num[0]+""+i.num[1]+""+i.num[2]+" ");
+            System.out.println(Arrays.toString(i.num));
         }
         System.out.println();
         System.out.println("win boards ");
         for (Board i : WBoards) {
-            System.out.print(i.num[0]+""+i.num[1]+""+i.num[2]+" ");
+            System.out.println(Arrays.toString(i.num));
         }
+        System.out.println(count);
+
+         */
     }
 
+
+
     public void findBestMove(){
+        boolean pleaseBreak = false;
         for(int[] i : tempBoard.possBoards){
+            if(pleaseBreak==true){
+                break;
+            }
             for(Board x : LBoards){
                 if(Arrays.toString(i).equals("["+x.num[0]+", "+x.num[1]+", "+x.num[2]+"]")){ // if the possboard is a winning board...
                     tempBoard.bestMove=i;
+                    pleaseBreak=true;
+                    break;
                 }
             }
         }
@@ -112,14 +138,16 @@ public class MyPlayer {
             int row = 0;
 
 
+            // use current board to make a board
+
             /***
              * This code will run each time the "MyPlayer" button is pressed.
              * Add your code to return the row and the column of the chip you want to take.
              * You'll be returning a data type called Point which consists of two integers.
              */
 
-            for(int i = 0; i<gameBoard.length; i++){
-                System.out.print(gameBoard[0][i].isAlive);
+            /*for(int i = 0; i<gameBoard.length; i++){
+                //System.out.print(gameBoard[0][i].isAlive);
                 if(gameBoard[0][i].isAlive == false){
                     System.out.println();
                     cols = new int [10];
@@ -143,40 +171,28 @@ public class MyPlayer {
             }
 
             for(int y=0; y<cols.length; y++){
-                System.out.print(cols[y]);
+                //System.out.print(cols[y]);
             }
 
-            currentBoard = new Board(cols[0], cols[1], cols[2]);
+            currentBoard = new Board(cols[0], cols[1], cols[2], 0, 0, 0, 0, 0, 0, 0);
 
         if(currentBoard.num[0]!=1 || currentBoard.num[1]!=0 || currentBoard.num[2]!=0) {
             for (Board i : boards) {
                 if (currentBoard.num[0] == i.num[0] && currentBoard.num[1] == i.num[1] && currentBoard.num[2] == i.num[2]) {
                     currentBoard = i;
-                    System.out.println(currentBoard.bestMove[0] + "" + currentBoard.bestMove[1] + "" + currentBoard.bestMove[2]);
+                    //System.out.println(currentBoard.bestMove[0] + "" + currentBoard.bestMove[1] + "" + currentBoard.bestMove[2]);
                 }
             }
-
-            int newCount = 0;
-            int newThing = 0;
-            for (int i = 0; i < currentBoard.bestMove.length; i++) {
-                if (currentBoard.num[i] == currentBoard.bestMove[i]) {
-                    newCount++;
-                } else {
-                    break;
-                }
-            }
-
-            newThing = currentBoard.bestMove[newCount];
-
-            System.out.println(newThing + "" + newCount);
-
-            row = newThing;
-            column = newCount;
         }
-        else{
-            row=0;
-            column=0;
-        }
+
+        currentBoard.translate();
+        row = currentBoard.bestRow;
+        column = currentBoard.bestCol;
+
+             */
+
+        row=8;
+        column=7;
 
             Point myMove = new Point(row, column);
             return myMove;

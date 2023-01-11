@@ -2,6 +2,11 @@ import java.awt.*;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
 public class MyPlayer {
 
     public Chip[][] gameBoard;
@@ -15,6 +20,7 @@ public class MyPlayer {
 
     ArrayList<int[]> LBoards = new ArrayList<int[]>();
     ArrayList<int[]> tempPossBoards = new ArrayList<int[]>();
+    ArrayList<String> losBoards = new ArrayList<String>();
 
     public MyPlayer() {
         columns = new int[10];
@@ -35,7 +41,9 @@ public class MyPlayer {
 
 
         //tempBoard = new Board (0,0,0,0,0,0,0,0,0,0);
-        for (int a = 1; a <= 10; a++) { // 1
+
+
+        /*for (int a = 1; a <= 10; a++) { // 1
             for (int b = 0; b <= a; b++) { // 2
                 for (int c = 0; c <= b; c++) { // 3
                     for (int d = 0; d <= c; d++) { // 4
@@ -45,23 +53,6 @@ public class MyPlayer {
                                     for (int h = 0; h <= g; h++) { // 8
                                         for (int i = 0; i <= h; i++) { // 9
                                             for (int j = 0; j <= i; j++) { // 10
-                                                /*tempBoard = new int[10];
-                                                tempBoard[0]=a;
-                                                tempBoard[1]=b;
-                                                tempBoard[2]=c;
-                                                tempBoard[3]=d;
-                                                tempBoard[4]=e;
-                                                tempBoard[5]=f;
-                                                tempBoard[6]=g;
-                                                tempBoard[7]=h;
-                                                tempBoard[8]=i;
-                                                tempBoard[9]=j;
-
-                                                 */
-
-
-
-
                                                 tempBoard = new Board (a,b,c,d,e,f,g,h,i,j);
                                                 getPossBoards(tempBoard);
                                             }
@@ -75,9 +66,32 @@ public class MyPlayer {
             }
         }
 
+         */
+
+        // READS FILE + CREATES ARRAY OF LOSE BOARDS
+
+        try {
+            File loseBoards = new File("loseboards.txt");
+            Scanner myReader = new Scanner(loseBoards);
+            while (myReader.hasNextLine()) {
+                losBoards.add(myReader.nextLine());
+            }
+            myReader.close();
+            for(String i: losBoards){
+                System.out.println(i);
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
 
 
-        /*
+
+
+
+
+
+
+/*
         for (int a = 1; a <= 3; a++) { // 1
             for (int b = 0; b <= a; b++) { // 2
                 for (int c = 0; c <= b; c++) { // 3
@@ -96,7 +110,11 @@ public class MyPlayer {
            System.out.println(Arrays.toString(x)+"Hi");
        }
 
-         */
+ */
+
+
+
+
 
 
 

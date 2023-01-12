@@ -14,11 +14,8 @@ public class MyPlayer {
     public int[] cols;
     public int[] possNum;
 
-    public Board tempBoard; // temporary placeholder to generate the board in order to put into the arrayList
     public Board currentBoard;
 
-    ArrayList<int[]> LBoards = new ArrayList<int[]>();
-    ArrayList<int[]> tempPossBoards = new ArrayList<int[]>();
     ArrayList<String> losBoards = new ArrayList<String>();
 
     public MyPlayer() {
@@ -28,21 +25,21 @@ public class MyPlayer {
          * This code will run just once, when the game opens.
          * Add your code here.
          */
-        /*standard=new int[10];
-        standard[0]=1;
-        for(int i=1; i<10; i++){
-            standard[i]=0;
+
+        // READS THE FILE + CREATES THE LOSE BOARD ARRAY
+        try {
+            File loseBoards = new File("loseboards.txt");
+            Scanner myReader = new Scanner(loseBoards);
+            while (myReader.hasNextLine()) {
+                losBoards.add(myReader.nextLine());
+            }
+            myReader.close();
+        } catch (IOException e){
+            e.printStackTrace();
         }
-        System.out.println(Arrays.toString(standard));
-        LBoards.add(standard);
 
-         */
-
-
-        //tempBoard = new Board (0,0,0,0,0,0,0,0,0,0);
-
-
-        /*for (int a = 1; a <= 10; a++) { // 1
+        /* This was the code I initially used to generate the lose boards and save them to the file.
+        for (int a = 1; a <= 10; a++) { // 1
             for (int b = 0; b <= a; b++) { // 2
                 for (int c = 0; c <= b; c++) { // 3
                     for (int d = 0; d <= c; d++) { // 4
@@ -53,7 +50,7 @@ public class MyPlayer {
                                         for (int i = 0; i <= h; i++) { // 9
                                             for (int j = 0; j <= i; j++) { // 10
                                                 tempBoard = new Board (a,b,c,d,e,f,g,h,i,j);
-                                                getPossBoards(tempBoard);
+                                                getPossBoards(tempBoard); // this method was slightly different, but the loops were the same.
                                             }
                                         }
                                     }
@@ -63,63 +60,8 @@ public class MyPlayer {
                     }
                 }
             }
-        }
-
-         */
-
-        // READS FILE + CREATES ARRAY OF LOSE BOARDS
-
-        try {
-            File loseBoards = new File("loseboards.txt");
-            Scanner myReader = new Scanner(loseBoards);
-            while (myReader.hasNextLine()) {
-                losBoards.add(myReader.nextLine());
-            }
-            myReader.close();
-            for(String i: losBoards){
-                System.out.println(i);
-            }
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-
-
-
-
-
-
-
-
-/*
-        for (int a = 1; a <= 3; a++) { // 1
-            for (int b = 0; b <= a; b++) { // 2
-                for (int c = 0; c <= b; c++) { // 3
-
-                    tempBoard = new Board(a, b, c, 0,0,0,0,0,0,0);
-                    //System.out.print(tempBoard.num[0]+""+tempBoard.num[1]+""+tempBoard.num[2]+" --> ");
-                    getPossBoards(tempBoard);
-                    //System.out.println();
-
-                }
-            }
-        }
-
-       System.out.println("hi");
-       for(int[] x : LBoards) {
-           System.out.println(Arrays.toString(x)+"Hi");
-       }
-
- */
-
-
-
-
-
-
-
-
+        } */
     }
-
 
     public void getPossBoards(Board b) {
         boolean pleaseBreak = false;
@@ -130,15 +72,11 @@ public class MyPlayer {
                 possNum[x] = b.num[x];
             }
             possNum[9] = b.num[9] - z;
-            //call cheeck board type here
-            //check if checkboard type return true then break;
-            //else no keep going
-            if (checkBoardType(possNum) == true) {
+            if (checkBoardType(possNum) == true) { // if it's a lose board, then set it as the best move and break out of the loops!
                 b.bestMove=possNum;
                 pleaseBreak = true;
             }
         }
-
         for (int z = 1; z <= b.num[8]; z++) { // LVL 9
             if (pleaseBreak == true) {
                 break;
@@ -157,7 +95,6 @@ public class MyPlayer {
                 pleaseBreak = true;
             }
         }
-
         for (int z = 1; z <= b.num[7]; z++) { // LVL 8
             if (pleaseBreak == true) {
                 break;
@@ -182,7 +119,6 @@ public class MyPlayer {
                 pleaseBreak = true;
             }
         }
-
         for (int z = 1; z <= b.num[6]; z++) { // LVL 7
             if (pleaseBreak == true) {
                 break;
@@ -214,7 +150,6 @@ public class MyPlayer {
                 pleaseBreak = true;
             }
         }
-
         for (int z = 1; z <= b.num[5]; z++) { // LVL 6
             if (pleaseBreak == true) {
                 break;
@@ -253,7 +188,6 @@ public class MyPlayer {
                 pleaseBreak = true;
             }
         }
-
         for (int z = 1; z <= b.num[4]; z++) { // LVL 5
             if (pleaseBreak == true) {
                 break;
@@ -299,7 +233,6 @@ public class MyPlayer {
                 pleaseBreak = true;
             }
         }
-
         for (int z = 1; z <= b.num[3]; z++) { // LVL 4
             if (pleaseBreak == true) {
                 break;
@@ -347,13 +280,11 @@ public class MyPlayer {
                     }
                 }
             }
-
             if (checkBoardType(possNum) == true) {
                 b.bestMove=possNum;
                 pleaseBreak = true;
             }
         }
-
         for (int z = 1; z <= b.num[2]; z++) { // LVL 3
             if (pleaseBreak == true) {
                 break;
@@ -407,13 +338,11 @@ public class MyPlayer {
                     }
                 }
             }
-
             if (checkBoardType(possNum) == true) {
                 b.bestMove=possNum;
                 pleaseBreak = true;
             }
         }
-
         for (int z = 1; z <= b.num[1]; z++) { // LVL 2
             if (pleaseBreak == true) {
                 break;
@@ -478,7 +407,6 @@ public class MyPlayer {
                 pleaseBreak = true;
             }
         }
-
         for (int z = 1; z < b.num[0]; z++) { // LVL 1
             if (pleaseBreak == true) {
                 break;
@@ -551,7 +479,6 @@ public class MyPlayer {
         }
     }
 
-    //param should be the poss num
     public boolean checkBoardType(int[] b) { // check if its a win or lose board
         for (String i : losBoards) { // if one of the possboards is a lose board, it's a win board so set pleasebreak to true
             if (Arrays.toString(b).equals(i)) {
@@ -563,31 +490,14 @@ public class MyPlayer {
     }
 
     public void findBestMove(Board b){
-        //boolean pleaseBreak = false;
+        getPossBoards(b); // loop through the possible boards and see if any are lose boards--set it as best move if there is.
 
-        getPossBoards(b);
-
-        /*for(int[] i : tempPossBoards){
-            if(pleaseBreak==true){
-                break;
-            }
-            for(int[] x : LBoards){
-                if(Arrays.toString(i).equals(Arrays.toString(x))){ // if the possboard is a winning board...
-                    b.bestMove=i;
-                    pleaseBreak=true;
-                    break;
-                }
-            }
-        }
-        int movesToLose=0;
-         */
         if(b.bestMove==null){ // if, after running through the loops above, there's still no best move (aka it's a losing board)
-
             b.bestMove = new int[10];
-            for(int x=0; x<b.num.length; x++){
+            for(int x=0; x<b.num.length; x++){ // set the best move equal to the current board to start
                 b.bestMove[x]=b.num[x];
             }
-
+            // these if statements go through columns 1-10 starting at 10. if there's a chip to remove in that column, remove it (just one chip)
             if(b.bestMove[9]>0){
                 b.bestMove[9]--;
             }
@@ -647,9 +557,7 @@ public class MyPlayer {
     }
 
     public Point move (Chip[][]pBoard){
-
         System.out.println("MyPlayer Move");
-
         gameBoard = pBoard;
         int column = 0;
         int row = 0;
@@ -659,10 +567,7 @@ public class MyPlayer {
              * Add your code to return the row and the column of the chip you want to take.
              * You'll be returning a data type called Point which consists of two integers.
              */
-
-
             cols = new int[10];
-
             for(Chip[] x : gameBoard){
                 for(int i=0; i<cols.length; i++){
                     if(x[i].isAlive == true){
@@ -671,29 +576,14 @@ public class MyPlayer {
                 }
             }
 
-
             currentBoard = new Board(cols[0], cols[1], cols[2], cols[3], cols[4], cols[5], cols[6], cols[7], cols[8], cols[9]);
             System.out.print(Arrays.toString(currentBoard.num));
             findBestMove(currentBoard);
-            System.out.print(Arrays.toString(currentBoard.num));
             System.out.println(Arrays.toString(currentBoard.bestMove));
 
-            /*
-        if(currentBoard.num[0]!=1 || currentBoard.num[1]!=0 || currentBoard.num[2]!=0) {
-            for (Board i : boards) {
-                if (currentBoard.num[0] == i.num[0] && currentBoard.num[1] == i.num[1] && currentBoard.num[2] == i.num[2]) {
-                    currentBoard = i;
-                    //System.out.println(currentBoard.bestMove[0] + "" + currentBoard.bestMove[1] + "" + currentBoard.bestMove[2]);
-                }
-            }
-        }
-
-             */
-
-        currentBoard.translate();
-        row = currentBoard.bestRow;
-        column = currentBoard.bestCol;
-
+            currentBoard.translate();
+            row = currentBoard.bestRow;
+            column = currentBoard.bestCol;
             Point myMove = new Point(row, column);
             return myMove;
         }

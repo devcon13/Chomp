@@ -13,7 +13,6 @@ public class MyPlayer {
     public int[] columns;
     public int[] cols;
     public int[] possNum;
-    public int[] standard;
 
     public Board tempBoard; // temporary placeholder to generate the board in order to put into the arrayList
     public Board currentBoard;
@@ -135,6 +134,7 @@ public class MyPlayer {
             //check if checkboard type return true then break;
             //else no keep going
             if (checkBoardType(possNum) == true) {
+                b.bestMove=possNum;
                 pleaseBreak = true;
             }
         }
@@ -153,6 +153,7 @@ public class MyPlayer {
                 possNum[9] = b.num[8] - z;
             }
             if (checkBoardType(possNum) == true) {
+                b.bestMove=possNum;
                 pleaseBreak = true;
             }
         }
@@ -177,6 +178,7 @@ public class MyPlayer {
                 }
             }
             if (checkBoardType(possNum) == true) {
+                b.bestMove=possNum;
                 pleaseBreak = true;
             }
         }
@@ -208,6 +210,7 @@ public class MyPlayer {
                 }
             }
             if (checkBoardType(possNum) == true) {
+                b.bestMove=possNum;
                 pleaseBreak = true;
             }
         }
@@ -246,6 +249,7 @@ public class MyPlayer {
                 }
             }
             if (checkBoardType(possNum) == true) {
+                b.bestMove=possNum;
                 pleaseBreak = true;
             }
         }
@@ -291,6 +295,7 @@ public class MyPlayer {
                 }
             }
             if (checkBoardType(possNum) == true) {
+                b.bestMove=possNum;
                 pleaseBreak = true;
             }
         }
@@ -344,6 +349,7 @@ public class MyPlayer {
             }
 
             if (checkBoardType(possNum) == true) {
+                b.bestMove=possNum;
                 pleaseBreak = true;
             }
         }
@@ -403,6 +409,7 @@ public class MyPlayer {
             }
 
             if (checkBoardType(possNum) == true) {
+                b.bestMove=possNum;
                 pleaseBreak = true;
             }
         }
@@ -467,6 +474,7 @@ public class MyPlayer {
                 }
             }
             if (checkBoardType(possNum) == true) {
+                b.bestMove=possNum;
                 pleaseBreak = true;
             }
         }
@@ -537,19 +545,16 @@ public class MyPlayer {
                 }
             }
             if (checkBoardType(possNum) == true) {
+                b.bestMove=possNum;
                 pleaseBreak = true;
             }
-        }
-        if(pleaseBreak==false) {
-            LBoards.add(b.num);
-            System.out.println(Arrays.toString(b.num));
         }
     }
 
     //param should be the poss num
     public boolean checkBoardType(int[] b) { // check if its a win or lose board
-        for (int[] i : LBoards) { // if one of the possboards is a lose board, it's a win board so set pleasebreak to true
-            if (Arrays.toString(b).equals(Arrays.toString(i))) {
+        for (String i : losBoards) { // if one of the possboards is a lose board, it's a win board so set pleasebreak to true
+            if (Arrays.toString(b).equals(i)) {
                 return true;
             }
         }
@@ -558,9 +563,11 @@ public class MyPlayer {
     }
 
     public void findBestMove(Board b){
-        boolean pleaseBreak = false;
+        //boolean pleaseBreak = false;
 
-        for(int[] i : tempPossBoards){
+        getPossBoards(b);
+
+        /*for(int[] i : tempPossBoards){
             if(pleaseBreak==true){
                 break;
             }
@@ -573,13 +580,69 @@ public class MyPlayer {
             }
         }
         int movesToLose=0;
+         */
         if(b.bestMove==null){ // if, after running through the loops above, there's still no best move (aka it's a losing board)
-            for(int[] i : tempPossBoards){
+
+            b.bestMove = new int[10];
+            for(int x=0; x<b.num.length; x++){
+                b.bestMove[x]=b.num[x];
+            }
+
+            if(b.bestMove[9]>0){
+                b.bestMove[9]--;
+            }
+            else{
+                if(b.bestMove[8]>0){
+                    b.bestMove[8]--;
+                }
+                else{
+                    if(b.bestMove[7]>0){
+                        b.bestMove[7]--;
+                    }
+                    else{
+                        if(b.bestMove[6]>0){
+                            b.bestMove[6]--;
+                        }
+                        else{
+                            if(b.bestMove[5]>0){
+                                b.bestMove[5]--;
+                            }
+                            else{
+                                if(b.bestMove[4]>0){
+                                    b.bestMove[4]--;
+                                }
+                                else{
+                                    if(b.bestMove[3]>0){
+                                        b.bestMove[3]--;
+                                    }
+                                    else{
+                                        if(b.bestMove[2]>0){
+                                            b.bestMove[2]--;
+                                        }
+                                        else{
+                                            if(b.bestMove[1]>0){
+                                                b.bestMove[1]--;
+                                            }
+                                            else{
+                                                b.bestMove[0]--;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            /*for(int[] i : tempPossBoards){
                 if(i[0]+i[1]+i[2]>=movesToLose){ // just pick the possboard that leaves you with the most chips left on the board
                     movesToLose=i[0]+i[1]+i[2]+i[3]+i[4]+i[5]+i[6]+i[7]+i[8]+i[9];
                     b.bestMove=i;
                 }
             }
+
+             */
         }
     }
 
@@ -590,16 +653,6 @@ public class MyPlayer {
         gameBoard = pBoard;
         int column = 0;
         int row = 0;
-
-        cols = new int[10];
-
-        for(Chip[] x : gameBoard){
-            for(int i=0; i<cols.length; i++){
-                if(x[i].isAlive == true){
-                    cols[i]++;
-                }
-            }
-        }
 
             /***
              * This code will run each time the "MyPlayer" button is pressed.
@@ -622,6 +675,7 @@ public class MyPlayer {
             currentBoard = new Board(cols[0], cols[1], cols[2], cols[3], cols[4], cols[5], cols[6], cols[7], cols[8], cols[9]);
             System.out.print(Arrays.toString(currentBoard.num));
             findBestMove(currentBoard);
+            System.out.print(Arrays.toString(currentBoard.num));
             System.out.println(Arrays.toString(currentBoard.bestMove));
 
             /*
@@ -634,14 +688,11 @@ public class MyPlayer {
             }
         }
 
+             */
+
         currentBoard.translate();
         row = currentBoard.bestRow;
         column = currentBoard.bestCol;
-
-             */
-
-        row = 1;
-        column = 1;
 
             Point myMove = new Point(row, column);
             return myMove;
